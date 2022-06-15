@@ -76,36 +76,7 @@ This service is responsible to provide login access to the application and provi
       url- http://localhost:8083/pensionerDetailByAadhaar/123456789012 
       This endpoint accept the user request and provides the Pensioner details. Access this using the POSTMAN client
       
-      Input - Aadhaar Number => 123456789012
-      
-**Valid Response**
-      
-```
-{
-  "name": "Achyuth",
-  "dateOfBirth": "1956-09-12",
-  "pan": "BHMER12436",
-  "salary": 27000,
-  "allowance": 10000,
-  "pensionType": "self",
-  "bank": {
-    "bankName": "ICICI",
-    "accountNumber": 12345678,
-    "bankType": "private"
-  }
-}
-```
-**Invalid Response**
-       
-```
-{
-  "message": "Aadhaar Number Not Found",
-  "timestamp": "2021-08-03T11:00:23.7960535",
-  "fieldErrors": [
-    "Aadhaar Number Not Found"
-  ]
-}
-```
+
         
 ## 4. Pension Disbursement Servicee
   
@@ -116,55 +87,6 @@ to process this request</p>
 <h3>Endpoint:</h3>
 <b>URL</b> -  <a href="http://localhost:8084/DisbursePension">http://localhost:8084/DisbursePension</a>
 This endpoint only accept authenticated request so make sure that there is is valid token present in "Authentication" header. Use AUTH-SERVICE to generate tokens
-
-<h4>Valid Input</h4>
-
-```
-{
-    "aadhaarNumber":"123456789012",
-    "pensionAmount":"31600",
-    "bankServiceCharge":"550"
-}
-```
-<h4>Invalid Input</h4>
-
-```
-{
-    "aadhaarNumber":"123456789012",
-    "pensionAmount":"31000",
-    "bankServiceCharge":"550"
-}
-```
-<br/>
-<p>If details are valid, pension amount and bankCharges is correct then user will following response with code "10" else "21"</p>
-
-<h4>Response:</h4>
-
-```
-{
-    "processPensionStatusCode": 10
-}
-```
-<p>If request format is invalid then following error response is sent back</p>
-
-```
-{
-    "message": "Invalid Request"
-    "timestamp": "2021-07-30T19:45:18.3272518"
-    "fieldErrors": [
-        "Aadhaar number can not be left blank",
-        "pensionAmount is invalid"
-    ]
-}
-```
-<p>If aadhaar number does not exist or there is some internal server error then it will send an following error resonse</p>
-
-```
-{
-    "message": "Invalid Request",
-    "timestamp": "2021-07-30T19:45:18.3272518"
-}
-```
      
 ## 5. Process Pension Service
 * It takes in the pensioner detail like the name, aadhaar number, pan detail, self or family or both type of pension
@@ -180,88 +102,6 @@ This endpoint only accept authenticated request so make sure that there is is va
 
 4. **Get Pension Details functionality**
 Select **/pensionerInput** POST method and click try it out
-**Valid Input**
-
-```
-{
-  "aadhaarNumber": "123456789012",
-  "dateOfBirth": "1956-09-12",
-  "name": "Achyuth",
-  "pan": "BHMER12436",
-  "pensionType": "self"
-}
-```
-
-**Response for valid input**
-
-```
-{
-  "name": "Achyuth",
-  "dateOfBirth": "12/09/1956",
-  "pan": "BHMER12436",
-  "pensionType": "self",
-  "pensionAmount": 31600
-}
-```
-
-**Invalid Input**
-
-```
-{
-  "aadhaarNumber": "123456789012",
-  "dateOfBirth": "1956-09-12",
-  "name": "Achyuth",
-  "pan": "BHMER12436",
-  "pensionType": "family"
-}
-```
-
-**Response for invalid input**
-
-```
-{
-  "message": "Details entered are incorrect",
-  "timestamp": "2021-08-03T10:50:58.1047198",
-  "fieldErrors": [
-    "Details entered are incorrect"
-  ]
-}
-```
-
-**Invalid Input - wrong Aadhaar number**
-
-```
-{
-  "aadhaarNumber": "223456789012",
-  "dateOfBirth": "1956-09-12",
-  "name": "Achyuth",
-  "pan": "BHMER12436",
-  "pensionType": "family"
-}
-```
-
-**Response for invalid input**
-
-```
-{
-  "message": "Aadhaar Number Not Found",
-  "timestamp": "2021-08-03T10:51:36.344356",
-  "fieldErrors": [
-    "Aadhaar Number Not Found"
-  ]
-}
-```
-
-**Response for expired token**
-
-```
-{
-  "message": "Token has been expired",
-  "timestamp": "2021-08-03T10:54:10.5174319",
-  "fieldErrors": [
-    "Token has been expired"
-  ]
-}
 ```
 
 5. **Process Pension functionality**
@@ -269,58 +109,3 @@ Select **/pensionerInput** POST method and click try it out
 * Status code of 10 for valid input and if the input has been processed by the disbursement microservice
 * Status code of 21 for invalid input where the service tries to send a request 2 more times to the disbursement service.
 
-
-**Valid Input**
-
-```
-{
-  "aadhaarNumber": "123456789012",
-  "bankServiceCharge": 550,
-  "pensionAmount": 31600
-}
-```
-
-**Response**
-
-```
-{
-  "processPensionStatusCode": 10
-}
-```
-
-**Invalid Input**
-
-```
-{
-  "aadhaarNumber": "123456789012",
-  "bankServiceCharge": 550,
-  "pensionAmount": 991600
-}
-```
-
-**Response**
-
-```
-{
-  "processPensionStatusCode": 21
-}
-```
-
-**Invalid Input - wrong aadhaar number**
-
-```
-{
-  "aadhaarNumber": "223456789012",
-  "bankServiceCharge": 550,
-  "pensionAmount": 31600
-}
-```
-
-**Response**
-
-```
-{
-  "message": "Aadhaar Number Not Found",
-  "timestamp": "2021-08-03T10:58:31.3557242"
-}
-```
