@@ -324,7 +324,3 @@ Select **/pensionerInput** POST method and click try it out
   "timestamp": "2021-08-03T10:58:31.3557242"
 }
 ```
-
-## 6. Pension Management Portal
-
-This is the front end made using Angular, open VS code and enter `ng serve` in the terminal to run the application at `http:\\localhost:4200`
